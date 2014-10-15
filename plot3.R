@@ -1,0 +1,13 @@
+labels <- as.character(read.csv2("household_power_consumption.txt", header=F, as.is=T, nrows=1))
+powerData <- read.csv2("household_power_consumption.txt", header=F, as.is=T, skip=66637, nrows=2880, na.strings="?", col.names=labels)
+powerData <- data.frame(datetime=strptime(paste(powerData[[1]], powerData[[2]]), "%d/%m/%Y %H:%M:%S"), powerData[-c(1,2)])
+powerData[-1] <- lapply(powerData[-1], as.numeric)
+png(filename="plot3.png")
+with(powerData, {
+     plot(datetime, Sub_metering_1, type="n", xlab="", ylab="Energy sub metering")
+     lines(datetime, Sub_metering_1)
+     lines(datetime, Sub_metering_2, col="red")
+     lines(datetime, Sub_metering_3, col="blue")
+})
+legend("topright", legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col=c("black", "red", "blue"), lty=1)
+dev.off()

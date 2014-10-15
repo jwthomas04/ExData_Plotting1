@@ -1,0 +1,7 @@
+labels <- as.character(read.csv2("household_power_consumption.txt", header=F, as.is=T, nrows=1))
+powerData <- read.csv2("household_power_consumption.txt", header=F, as.is=T, skip=66637, nrows=2880, na.strings="?", col.names=labels)
+powerData <- data.frame(datetime=strptime(paste(powerData[[1]], powerData[[2]]), "%d/%m/%Y %H:%M:%S"), powerData[-c(1,2)])
+powerData[-1] <- lapply(powerData[-1], as.numeric)
+png(filename="plot2.png")
+with(powerData, plot(datetime, Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)"))
+dev.off()
